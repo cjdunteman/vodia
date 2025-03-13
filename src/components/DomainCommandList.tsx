@@ -26,8 +26,8 @@ export function DomainCommandList({ domain }: { domain: DomainListItem }) {
       icon: Icon.List,
       action: () => {
         push(<DomainExtensions domain={domain} />);
-      }
-    }
+      },
+    },
   ];
 
   return (
@@ -40,10 +40,7 @@ export function DomainCommandList({ domain }: { domain: DomainListItem }) {
           icon={command.icon}
           actions={
             <ActionPanel>
-              <Action
-                title="Execute Command"
-                onAction={command.action}
-              />
+              <Action title="Execute Command" onAction={command.action} />
               <Action.OpenInBrowser
                 title="Open in Browser"
                 shortcut={{ modifiers: ["cmd"], key: "b" }}
@@ -55,4 +52,4 @@ export function DomainCommandList({ domain }: { domain: DomainListItem }) {
       ))}
     </List>
   );
-} 
+}

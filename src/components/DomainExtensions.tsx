@@ -35,18 +35,18 @@ export function DomainExtensions({ domain }: { domain: DomainListItem }) {
         const username = preferences.username;
         const password = preferences.password;
         const url = "https://" + preferences.domain + `/rest/domain/${domain.name}/extensions`;
-        console.log(url)
-        
-        const authString = Buffer.from(`${username}:${password}`).toString('base64');
-        
+        console.log(url);
+
+        const authString = Buffer.from(`${username}:${password}`).toString("base64");
+
         const response = await fetch(url, {
           method: "GET",
           headers: {
-            'Authorization': `Basic ${authString}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Accept-Encoding': 'identity'
-          }
+            Authorization: `Basic ${authString}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Accept-Encoding": "identity",
+          },
         });
 
         if (!response.ok) {
@@ -54,9 +54,9 @@ export function DomainExtensions({ domain }: { domain: DomainListItem }) {
         }
 
         const text = await response.text();
-        
+
         if (!text) {
-          throw new Error('Empty response received from server');
+          throw new Error("Empty response received from server");
         }
 
         const data = JSON.parse(text) as ExtensionsResponse;
@@ -64,7 +64,7 @@ export function DomainExtensions({ domain }: { domain: DomainListItem }) {
         setExtensions(extensionList);
         setError(null);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+        const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
         setError(errorMessage);
         setExtensions([]);
       } finally {
@@ -78,10 +78,7 @@ export function DomainExtensions({ domain }: { domain: DomainListItem }) {
   if (error) {
     return (
       <List isLoading={isLoading}>
-        <List.Item
-          title={`Error: ${error}`}
-          icon={Icon.ExclamationMark}
-        />
+        <List.Item title={`Error: ${error}`} icon={Icon.ExclamationMark} />
       </List>
     );
   }
@@ -94,10 +91,7 @@ export function DomainExtensions({ domain }: { domain: DomainListItem }) {
             key={index}
             title={ext.first_name + " " + ext.display_name}
             subtitle={ext.id.toString()}
-            accessories={[
-              { text: ext.email_address },
-              ...(ext.alias?.length ? [{ text: ext.alias.join(", ") }] : []),
-            ]}
+            accessories={[{ text: ext.email_address }, ...(ext.alias?.length ? [{ text: ext.alias.join(", ") }] : [])]}
             icon={ext.dnd === true ? Icon.CircleFilled : Icon.Circle}
             actions={
               <ActionPanel>
@@ -113,4 +107,4 @@ export function DomainExtensions({ domain }: { domain: DomainListItem }) {
       </List.Section>
     </List>
   );
-} 
+}
