@@ -1,7 +1,8 @@
 // Import necessary components from Raycast API and React
-import { ActionPanel, Detail, List, Action, Icon, getPreferenceValues } from "@raycast/api";
+import { ActionPanel, Detail, List, Action, Icon, getPreferenceValues, closeMainWindow } from "@raycast/api";
 import { useState, useEffect } from "react";
 import fetch from "node-fetch";
+import { DomainCommandList, DomainListItem } from "./components/DomainCommandList";
 
 // Define the structure of preferences
 interface Preferences {
@@ -31,9 +32,10 @@ export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
   
   // State management using React hooks
-  const [domains, setDomains] = useState<string[]>([]);  // Array to store domain display names
-  const [isLoading, setIsLoading] = useState(true);      // Loading state indicator
-  const [error, setError] = useState<string | null>(null); // Error state management
+  const [domains, setDomains] = useState<DomainListItem[]>([]);
+  const [selectedDomain, setSelectedDomain] = useState<DomainListItem | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Effect hook to fetch domains when component mounts
   useEffect(() => {
@@ -82,10 +84,13 @@ export default function Command() {
         }
 
         try {
-          // Parse the JSON response and extract display names
+          // Parse the JSON response and extract display names and domain names
           const data = JSON.parse(text) as DomainsResponse;
-          const displayNames = Object.values(data).map(domain => domain.display);
-          setDomains(displayNames);
+          const domainItems = Object.values(data).map(domain => ({
+            display: domain.display,
+            name: domain.name
+          }));
+          setDomains(domainItems);
           setError(null);
         } catch (parseError) {
           // Handle JSON parsing errors
@@ -111,6 +116,11 @@ export default function Command() {
     fetchDomains();
   }, []); // Empty dependency array means this effect runs once on mount
 
+  // If a domain is selected, show its commands
+  if (selectedDomain) {
+    return <DomainCommandList domain={selectedDomain} />;
+  }
+
   // Render error state if there's an error
   if (error) {
     return (
@@ -126,10 +136,24 @@ export default function Command() {
   // Render the list of domains
   return (
     <List isLoading={isLoading}>
-      {domains.map((display, index) => (
+      {domains.map((domain, index) => (
         <List.Item
           key={index}
-          title={display}
+          title={domain.display}
+          subtitle={domain.name}
+          actions={
+            <ActionPanel>
+              <Action
+                title="Show Commands"
+                onAction={() => setSelectedDomain(domain)}
+              />
+              <Action.OpenInBrowser
+                title="Open in Browser"
+                shortcut={{ modifiers: ["cmd"], key: "o" }}
+                url={`https://${domain.name}`}
+              />
+            </ActionPanel>
+          }
         />
       ))}
     </List>
