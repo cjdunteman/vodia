@@ -118,7 +118,7 @@ export default function Command() {
   const filteredExtensions = extensions.filter((ext) => {
     const searchLower = searchText.toLowerCase();
     return (
-      ext.id.toString().includes(searchLower) ||
+      ext.name.toString().includes(searchLower) ||
       ext.first_name.toLowerCase().includes(searchLower) ||
       ext.display_name.toLowerCase().includes(searchLower) ||
       ext.email_address.toLowerCase().includes(searchLower) ||
@@ -144,7 +144,7 @@ export default function Command() {
         <List.Item
           key={index}
           title={ext.first_name + " " + ext.display_name}
-          subtitle={`Ext. ${ext.id}` + ' - ' + `${ext.domain}`}
+          subtitle={`Ext. ${ext.name}` + " - " + `${ext.domain}`}
           accessories={[
             { text: ext.email_address },
             ...(ext.alias?.length > 1 ? [{ text: ext.alias.slice(1).join(", ") }] : []),
@@ -152,13 +152,10 @@ export default function Command() {
           icon={ext.dnd === true ? Icon.CircleFilled : Icon.Circle}
           actions={
             <ActionPanel>
-              <Action
-                title="Show Details"
-                onAction={() => push(<ExtensionDetails extension={ext} />)}
-              />
+              <Action title="Show Details" onAction={() => push(<ExtensionDetails extension={ext} />)} />
               <Action.CopyToClipboard
                 title="Copy Extension Id"
-                content={ext.id.toString()}
+                content={ext.name.toString()}
                 shortcut={{ modifiers: ["cmd"], key: "c" }}
               />
               <Action.CopyToClipboard

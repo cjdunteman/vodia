@@ -22,7 +22,14 @@ export function ExtensionDetails({ extension }: ExtensionDetailsProps) {
 - **Domain:** ${extension.domain}
 - **Email:** ${extension.email_address}
 - **DND Status:** ${extension.dnd ? "Enabled" : "Disabled"}
-${extension.alias?.length > 1 ? `\n## Additional Aliases\n${extension.alias.slice(1).map(alias => `- ${alias}`).join('\n')}` : ''}
+${
+  extension.alias?.length > 1
+    ? `\n## Additional Aliases\n${extension.alias
+        .slice(1)
+        .map((alias) => `- ${alias}`)
+        .join("\n")}`
+    : ""
+}
 `;
 
   return (
@@ -34,9 +41,9 @@ ${extension.alias?.length > 1 ? `\n## Additional Aliases\n${extension.alias.slic
           <Detail.Metadata.Label title="Extension" text={extension.id.toString()} />
           <Detail.Metadata.Label title="Domain" text={extension.domain} />
           <Detail.Metadata.Label title="Email" text={extension.email_address} />
-          <Detail.Metadata.Label 
-            title="DND Status" 
-            text={extension.dnd ? "Enabled" : "Disabled"} 
+          <Detail.Metadata.Label
+            title="DND Status"
+            text={extension.dnd ? "Enabled" : "Disabled"}
             icon={extension.dnd ? Icon.CircleFilled : Icon.Circle}
           />
         </Detail.Metadata>
@@ -62,4 +69,4 @@ ${extension.alias?.length > 1 ? `\n## Additional Aliases\n${extension.alias.slic
       }
     />
   );
-} 
+}
