@@ -1,5 +1,6 @@
 import { List, Action, ActionPanel, Icon, useNavigation } from "@raycast/api";
 import { DomainExtensions } from "./DomainExtensions";
+import { DomainDetails } from "./DomainDetails"; // <-- import the new component
 
 // Define a structure for our list items
 export interface DomainListItem {
@@ -20,6 +21,14 @@ export function DomainCommandList({ domain }: { domain: DomainListItem }) {
   const { push } = useNavigation();
 
   const commands: DomainCommand[] = [
+    {
+      title: "View Domain Details",
+      description: "View details about this domain.",
+      icon: Icon.Info,
+      action: () => {
+        push(<DomainDetails domain={domain} />);
+      },
+    },
     {
       title: "View Extensions",
       description: "List all extensions for this domain",

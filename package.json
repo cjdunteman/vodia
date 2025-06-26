@@ -9,15 +9,15 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "getDomains",
-      "title": "Get Domains",
-      "description": "Get a list of all tenant domains",
+      "name": "searchDomains",
+      "title": "Search Domains",
+      "description": "Search for a domain.",
       "mode": "view"
     },
     {
       "name": "searchExtensions",
       "title": "Search Extensions",
-      "description": "Search extensions by name or ID",
+      "description": "Search extensions by name, domain, email, and more.",
       "mode": "view"
     }
   ],
