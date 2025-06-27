@@ -123,17 +123,6 @@ export default function Command() {
     fetchExtensions();
   }, [selectedDomain]);
 
-  const filteredExtensions = extensions.filter((ext) => {
-    const searchLower = searchText.toLowerCase();
-    return (
-      ext.name.toString().includes(searchLower) ||
-      ext.first_name.toLowerCase().includes(searchLower) ||
-      ext.display_name.toLowerCase().includes(searchLower) ||
-      ext.email_address.toLowerCase().includes(searchLower) ||
-      (ext.alias || []).some((alias) => alias.toLowerCase().includes(searchLower))
-    );
-  });
-
   if (error) {
     return (
       <List isLoading={isLoading}>
@@ -143,18 +132,13 @@ export default function Command() {
   }
 
   return (
-    <List
-      isLoading={isLoading}
-      searchBarPlaceholder="Choose domain to search..."
-      onSearchTextChange={setSearchText}
-    >
+    <List isLoading={isLoading} searchBarPlaceholder="Choose domain to search..." onSearchTextChange={setSearchText}>
       {!selectedDomain
         ? domains
             .filter((domain) => {
               const searchLower = searchText.toLowerCase();
               return (
-                domain.name.toLowerCase().includes(searchLower) ||
-                domain.display.toLowerCase().includes(searchLower)
+                domain.name.toLowerCase().includes(searchLower) || domain.display.toLowerCase().includes(searchLower)
               );
             })
             .map((domain) => (
@@ -199,7 +183,10 @@ export default function Command() {
                   icon={ext.dnd === true ? Icon.CircleFilled : Icon.Circle}
                   actions={
                     <ActionPanel>
-                      <Action title="Show Details" onAction={() => push(<ExtensionDetails extension={extWithDomain} />)} />
+                      <Action
+                        title="Show Details"
+                        onAction={() => push(<ExtensionDetails extension={extWithDomain} />)}
+                      />
                       <Action.CopyToClipboard
                         title="Copy Extension Id"
                         content={ext.name.toString()}
