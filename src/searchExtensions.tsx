@@ -1,4 +1,4 @@
-import { List, ActionPanel, Action, Icon, getPreferenceValues, useNavigation } from "@raycast/api";
+import { List, ActionPanel, Action, Icon, getPreferenceValues, useNavigation, clearSearchBar } from "@raycast/api";
 import { useState, useEffect } from "react";
 import fetch from "node-fetch";
 import { ExtensionDetails } from "./components/ExtensionDetails";
@@ -145,21 +145,35 @@ export default function Command() {
   return (
     <List
       isLoading={isLoading}
-      searchBarPlaceholder="Search domains or extensions..."
+      searchBarPlaceholder="Choose domain to search..."
       onSearchTextChange={setSearchText}
     >
       {!selectedDomain
-        ? domains.map((domain) => (
-            <List.Item
-              key={domain.name}
-              title={domain.display}
-              actions={
-                <ActionPanel>
-                  <Action title="Show Extensions" onAction={() => setSelectedDomain(domain.name)} />
-                </ActionPanel>
-              }
-            />
-          ))
+        ? domains
+            .filter((domain) => {
+              const searchLower = searchText.toLowerCase();
+              return (
+                domain.name.toLowerCase().includes(searchLower) ||
+                domain.display.toLowerCase().includes(searchLower)
+              );
+            })
+            .map((domain) => (
+              <List.Item
+                key={domain.name}
+                title={domain.display}
+                actions={
+                  <ActionPanel>
+                    <Action
+                      title="Show Extensions"
+                      onAction={async () => {
+                        setSelectedDomain(domain.name);
+                        await clearSearchBar();
+                      }}
+                    />
+                  </ActionPanel>
+                }
+              />
+            ))
         : extensions
             .filter((ext) => {
               const searchLower = searchText.toLowerCase();
