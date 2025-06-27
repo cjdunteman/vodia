@@ -8,7 +8,7 @@
   "categories": [
     "Other"
   ],
-  "owner": "javis",
+  "owner": "cjdunteman",
   "license": "MIT",
   "commands": [
     {
@@ -20,7 +20,7 @@
     {
       "name": "searchExtensions",
       "title": "Search Extensions",
-      "description": "Search extensions within a domain by name, domain, email, and more.",
+      "description": "Search extensions within a domain by name, email, or number.",
       "mode": "view"
     }
   ],
