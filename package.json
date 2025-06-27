@@ -3,8 +3,11 @@
   "name": "vodia",
   "title": "Vodia",
   "description": "Interact with your Vodia PBX.",
-  "icon": "extension-icon.png",
+  "icon": "extension_icon.png",
   "author": "cjdunteman",
+  "categories": [
+    "Other"
+  ],
   "owner": "javis",
   "license": "MIT",
   "commands": [
@@ -17,7 +20,7 @@
     {
       "name": "searchExtensions",
       "title": "Search Extensions",
-      "description": "Search extensions by name, domain, email, and more.",
+      "description": "Search extensions within a domain by name, domain, email, and more.",
       "mode": "view"
     }
   ],
