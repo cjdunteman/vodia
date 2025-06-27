@@ -1,5 +1,5 @@
 // Import necessary components from Raycast API and React
-import { ActionPanel, List, Action, Icon, getPreferenceValues } from "@raycast/api";
+import { ActionPanel, List, Action, Icon, getPreferenceValues, clearSearchBar } from "@raycast/api";
 import { useState, useEffect } from "react";
 import fetch from "node-fetch";
 import { DomainCommandList, DomainListItem } from "./components/DomainCommandList";
@@ -142,7 +142,13 @@ export default function Command() {
           subtitle={domain.name}
           actions={
             <ActionPanel>
-              <Action title="Show Commands" onAction={() => setSelectedDomain(domain)} />
+              <Action
+                title="Show Commands"
+                onAction={async () => {
+                  setSelectedDomain(domain);
+                  await clearSearchBar();
+                }}
+              />
               <Action.OpenInBrowser
                 title="Open in Browser"
                 shortcut={{ modifiers: ["cmd"], key: "o" }}
